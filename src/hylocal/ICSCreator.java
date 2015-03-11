@@ -19,7 +19,10 @@ public class ICSCreator {
 			out.println("BEGIN:VEVENT");
 			String cls_str = (cls % 2 == 0) ? (cls == 0 ? "PUBLIC" : "CONFIDENTIAL") : "PRIVATE";
 			out.println("CLASS:" + cls_str);
-			out.println("LOCATION:" + loc);
+			if (!loc.equals(""))
+			{
+				out.println("LOCATION:" + loc);
+			}
 			out.println("PRIORITY:" + String.valueOf(pri));
 			out.println("SUMMARY:" + sum);
 			String timeZone = TimeZone.getDefault().getID();
