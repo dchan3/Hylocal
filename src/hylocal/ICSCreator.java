@@ -7,7 +7,8 @@ import java.io.PrintWriter;
 import java.util.TimeZone;
 
 public class ICSCreator {
-	public static void createICSFile(String fn, int cls, String loc, int pri, String sum, int[][] dates, int[][] times) {
+	public static boolean createICSFile(String fn, int cls, String loc, int pri, String sum, int[][] dates, int[][] times) {
+		boolean retval = false;
 		try {
 			File f = new File(fn + ".ics");
 			if (!f.exists()) {
@@ -39,6 +40,7 @@ public class ICSCreator {
 			out.println("END:VEVENT");
 			out.println("END:VCALENDAR");
 			out.close();
+			retval = true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,5 +48,6 @@ public class ICSCreator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return retval;
 	}
 }
