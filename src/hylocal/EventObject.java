@@ -1,18 +1,31 @@
 package hylocal;
 
+import java.util.TimeZone;
+
 public class EventObject {
-	String summary, location;
+	String summary, location, timezone;
 	int classification, priority;
 	int[][] dates, times;
 	
 	public EventObject(String sum, String loc, int cls, int pri, int[][] d, int[][] t) {
 		summary = sum;
 		location = loc;
+		timezone = TimeZone.getDefault().getID();
 		classification = cls;
 		priority = pri;
 		dates = d;
 		times = t;
 	}
+	
+	public EventObject(String sum, String loc, String tz, int cls, int pri, int[][] d, int[][] t) {
+		summary = sum;
+		location = loc;
+		timezone = tz;
+		classification = cls;
+		priority = pri;
+		dates = d;
+		times = t;
+	} 
 	
 	public String getSummary() {
 		return summary;
@@ -28,6 +41,14 @@ public class EventObject {
 	
 	public void setLocation(String loc) {
 		location = loc;
+	}
+	
+	public String getTimezone() {
+		return timezone;
+	}
+	
+	public void setTimezone(String tz) {
+		timezone = tz;
 	}
 	
 	public int getClassification() {

@@ -42,12 +42,14 @@ public class ICSCreator {
 			out.close();
 			retval = true;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return retval;
+	}
+	
+	public static boolean createICSFile(String fn, EventObject e) {
+		return createICSFile(fn, e.getClassification(), e.getLocation(), e.getPriority(), e.getSummary(), e.getDates(), e.getTimes());
 	}
 }

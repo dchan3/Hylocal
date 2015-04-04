@@ -3,16 +3,49 @@ package hylocal;
 import java.util.Scanner;
 
 public class Main {
+	static Scanner in;
+	
 	public static void main(String args[]) {
+		in = new Scanner(System.in);
 		System.out.println("Welcome to Hylocal 1.0!!!");
 		System.out.println("I take parameters for an event and output them to files.");
 		System.out.println("---------");
-		takeInputAndWriteFile();
+		mainMenu();
+	}
+	
+	public static void mainMenu() {
+		boolean exit = false;
+		System.out.println("How may I help you today?");
+		while (!exit) {
+			System.out.println("Type in 1 to create an event.");
+			System.out.println("Type in 2 to find free time given a set of events.");
+			System.out.println("Type in X to quit.");
+			String input = in.nextLine();
+			if (input.equals("1")) {
+				takeInputAndWriteFile();
+			}
+			else if (input.equals("2")) {
+				freeTime();
+			}
+			else if (input.toLowerCase().equals("x")) {
+				System.out.println("Have a nice day!");
+				System.exit(0);
+			}
+			else {
+				System.out.println("Invalid input. Please try again.");
+			}
+		}
+		
+	}
+	
+	public static void freeTime() {
+		System.out.println("What is the name of the text file containing your list of ICS files?");
+		String fn = in.nextLine();
+		if (FreeTimeFinder.writeOutFreeTimeICSFiles(fn)) System.out.println("Free time files output successful!");
+		else System.out.println("Free time files output unsuccessful...");
 	}
 	
 	public static void takeInputAndWriteFile() {
-		Scanner in = new Scanner(System.in);
-		
 		String fn = "", loc = "", sum = "", part = "", date_in = "", time_in = "";
 		int cls = 0, pri = 0;
 		int[][] dates = new int[2][3], times = new int [2][3];
