@@ -2,14 +2,18 @@ package hylocal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class FreeTimeFinder {
-	public static boolean writeOutFreeTimeICSFiles(String fn) {
+	public static boolean writeOutFreeTimeICSFiles(String fn, boolean writeList) {
 		boolean retval = false;
+		ArrayList<String> ehwa = new ArrayList<>();
 		try {
 			File f = new File(fn);
 			if (!f.exists()) {
@@ -38,10 +42,27 @@ public class FreeTimeFinder {
 			for (int[][] ft : freeTimeList) {
 				EventObject eo = new EventObject("Free Time", "", 1, 9, day, ft);
 				ICSCreator.createICSFile("Hylocal_" + fn + "_" + fn_stem + "_" + p, eo);
+				if (writeList) {
+					ehwa.add("Hylocal_" + fn + "_" + fn_stem + "_" + p + ".ics");
+				}
 				p++;
 			};
+			if (writeList) {
+				File j = new File("Hylocal_"+ fn + "_FreeTimeList.txt");
+				if (!j.exists()) {
+					j.createNewFile();
+				}
+				PrintWriter fw = new PrintWriter(j);
+				for (String s : ehwa) {
+					fw.println(s);
+				}
+				fw.close();
+			}
 			retval = true;
 		} catch (FileNotFoundException e) {
+			
+		}
+		catch (IOException e) {
 			
 		}
 		return retval;

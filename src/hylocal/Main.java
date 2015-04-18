@@ -1,5 +1,7 @@
 package hylocal;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -19,6 +21,7 @@ public class Main {
 		while (!exit) {
 			System.out.println("Type in 1 to create an event.");
 			System.out.println("Type in 2 to find free time given a set of events.");
+			System.out.println("Type in 3 to find common free time given two sets of events.");
 			System.out.println("Type in X to quit.");
 			String input = in.nextLine();
 			if (input.equals("1")) {
@@ -26,6 +29,9 @@ public class Main {
 			}
 			else if (input.equals("2")) {
 				freeTime();
+			}
+			else if (input.equals("3")) {
+				commonFreeTime();
 			}
 			else if (input.toLowerCase().equals("x")) {
 				System.out.println("Have a nice day!");
@@ -38,10 +44,42 @@ public class Main {
 		
 	}
 	
+	private static boolean checkFiles(ArrayList<String> list) {
+		boolean retval = true;
+		for (String s : list) {
+			File f = new File(s);
+			if (!f.exists()) {
+				retval = false;
+			}
+		}
+		return retval;
+	}
+	
+	public static void commonFreeTime() {
+		System.out.println("Enter the names of your ICS files. Type a newline as input when you are finished.");
+		ArrayList<String> input_fns = new ArrayList<>();
+		String fn = "eh";
+		while (!fn.equals("")) {
+			fn = in.nextLine();
+			if (!fn.equals("")) input_fns.add(fn);
+		}
+		if (!checkFiles(input_fns)) {
+			System.out.println("One or more files could not be found.");
+		}
+		else {
+			if (CommonFreeTime.writeToFile(input_fns)) {
+				System.out.println("Files succesfully written!");
+			}
+			else {
+				System.out.println("File write unsuccessful!");
+			}
+		}
+	}
+	
 	public static void freeTime() {
 		System.out.println("What is the name of the text file containing your list of ICS files?");
 		String fn = in.nextLine();
-		if (FreeTimeFinder.writeOutFreeTimeICSFiles(fn)) System.out.println("Free time files output successful!");
+		if (FreeTimeFinder.writeOutFreeTimeICSFiles(fn, false)) System.out.println("Free time files output successful!");
 		else System.out.println("Free time files output unsuccessful...");
 	}
 	
@@ -254,9 +292,9 @@ public class Main {
 		boolean retval = false;
 		if (isValidTime(i) && isValidTime(k)) {
 			int i_time = Integer.parseInt(i.substring(0, i.length() - 1), 10), k_time = Integer.parseInt(k.substring(0, k.length() - 1), 10);
-			boolean i_ap = i.charAt(i.length() - 1) == 'a';
+			boolean i_ap = i.charAt(i.length() - 1) == 'a' || i.charAt(i.length() - 1) == 'A';
 			int i_hour = i_time / 100;
-			boolean k_ap = k.charAt(k.length() - 1) == 'a';
+			boolean k_ap = k.charAt(k.length() - 1) == 'a' || k.charAt(k.length() - 1) == 'A';
 			int k_hour = k_time / 100;
 			
 			int i_min = i_time % 100, k_min = k_time % 100; 
@@ -284,7 +322,7 @@ public class Main {
 	
 	public static int[] outToTime(String n) {
 		int i_time = Integer.parseInt(n.substring(0, n.length() - 1), 10);
-		boolean i_ap = n.charAt(n.length() - 1) == 'a';
+		boolean i_ap = n.charAt(n.length() - 1) == 'a' || n.charAt(n.length() - 1) == 'A';
 		int i_hour = i_time / 100;
 		int i_min = i_time % 100;
 		if (i_hour == 12) { i_ap = !i_ap; }
